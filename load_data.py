@@ -4,7 +4,7 @@ import psycopg2.extras
 
 
 
-if __name__ == '__main__' :
+def main():
     connection_string = "host= 'localhost' dbname='resort' user='resort' password='resort'"
 
     conn = psycopg2.connect(connection_string,cursor_factory=psycopg2.extras.DictCursor )
@@ -135,3 +135,9 @@ if __name__ == '__main__' :
 
 
 # ###########################################################################################################################################################################
+
+
+
+
+if __name__=="__main__":
+    main()
