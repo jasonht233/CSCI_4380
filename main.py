@@ -2,7 +2,7 @@ import csv
 import psycopg2
 import psycopg2.extras 
 import load_data
-
+import math 
 import sys
 
 test = True   
@@ -11,8 +11,8 @@ test = True
 class engine:
 
     def __init__(self):
-        if not test:
-            load_data.main()
+        
+        load_data.main()
 
         #connection from the data 
         connection_string = "host= 'localhost' dbname='resort' user='resort' password='resort'"
@@ -38,9 +38,9 @@ class engine:
     def search(self):
         while(True):
 
-            if(self.loc_x != -1 or self.loc_y != -1):
-                self.loc_x = input("Please enter your location x: ")
-                self.loc_y = input("Please enter your location y: ")
+            if(self.loc_x == -1 or self.loc_y == -1):
+                self.loc_x = float(input("Please enter your location x: "))
+                self.loc_y = float(input("Please enter your location y: "))
 
             # city = input("Please enter your city: ")
 
@@ -50,8 +50,9 @@ class engine:
             #to enter the really instruction.
             instruction = input("Please enter what you want:\n")
             
+            
 
-
+            # command analyze 
             if instruction == "Quit":
                 print("thank you for using stupid app")
                 break
@@ -64,16 +65,16 @@ class engine:
             for ins in ins_lst:
                 
                 if instruction == "Historic":
-                    loc_x,loc_y=self.find_his(loc_x, loc_y)
+                    tmp_x, tmp_y=self.find_his(self.loc_x,self.loc_y)
 
                 if instruction == "Outdoor":
-                    loc_x,loc_y=self.find_out(loc_x, loc_y)
+                    id=self.find_out(self.loc_x,self.loc_y)
                 
                 if instruction == "Liquor":
-                    loc_x,loc_y=self.find_liq(loc_x, loc_y)
+                    tmp_x,tmp_y=self.find_liq(self.loc_x,self.loc_y)
                 
                 if instruction == "Rivers":
-                    loc_x,loc_y=self.find_riv(loc_x, loc_y)
+                    tmp_x,tmp_y=self.find_riv(self.loc_x,self.loc_y)
 
      
 
@@ -82,8 +83,34 @@ class engine:
         return (0,0)
 
     def find_out(self,loc_x, loc_y):
-        print(">>>doing func find_out()")
-        return (0,0)
+        cursor =self.conn.cursor()
+        cmd = "SELECT id, point_x, point_y FROM outdoor_recreation;"
+        cursor.execute(cmd)
+        tmp_lst = cursor.fetchall()
+
+        nice_place = list() 
+        min_dist = 999999
+
+        for i in range(0,len(tmp_lst) ):
+            
+            out_id = tmp_lst[i][0]
+            out_x = tmp_lst[i][1]
+            out_y = tmp_lst[i][2]
+
+
+
+            dist = math.sqrt( math.pow(loc_x-float(out_x),2) + math.pow(loc_y-float(out_y),2))
+
+            min_dist = min(min_dist, dist)
+
+            if(min_dist == dist):
+                nice_place.append(out_id)
+        
+        if test:
+            print( nice_place )
+
+        return nice_place[0]
+
 
     def find_liq(self,loc_x, loc_y):
         print(">>>doing func find_liq()")

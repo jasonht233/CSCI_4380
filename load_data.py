@@ -2,13 +2,39 @@ import csv
 import psycopg2
 import psycopg2.extras
 
-
+test = True 
 
 def main():
     connection_string = "host= 'localhost' dbname='resort' user='resort' password='resort'"
 
     conn = psycopg2.connect(connection_string,cursor_factory=psycopg2.extras.DictCursor )
 
+
+    # check do we have already have the table 
+    re_load = False 
+    lst = ['fishing_and_river','historic_places','liquor','outdoor_recreation']
+    table_cnt = 0 
+    for table in lst:
+        cursor = conn.cursor()
+        cmd = "SELECT * FROM information_schema.tables where table_name = '%s';"%(table)
+        cursor.execute(cmd)
+        if(cursor.rowcount == 1):
+            table_cnt +=1 
+            cmd = "SELECT * FROM %s;"%(table)
+            cursor.execute(cmd)
+            if cursor.rowcount == 0 :
+                re_load = True 
+    
+    if table_cnt != 4:
+        re_load = True 
+    
+    if re_load != True : 
+        if test :
+            print("Data has existed, no need to reload ")
+        return 0
+    
+    if test:
+        print("Start to reload")
 
     ###this part is to drop the existed tables and the data we have already loaded, and reloaded
     with open('schema.sql','r') as setup:
@@ -30,9 +56,10 @@ def main():
                 line_count+=1
                 continue
 
-            line_count+= 1
+            
             cursor = conn.cursor()
-
+            line_count+= 1
+            
             row = list(row_o)
 
             for cnt in range(0, len(row) ):
