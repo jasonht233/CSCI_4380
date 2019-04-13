@@ -27,7 +27,7 @@ General interface:
         at first, we would ask the user to write the location
         
         then get into the manu:
-            1. recommand (randomly choose the closest places for user)
+            *1. recommand (randomly choose the closest places for user)
                 #the following 4 would be choose the closest place which the user is most interested in 
             2. Historic
             3. Outdoor
