@@ -165,8 +165,8 @@ class engine:
             if(min_dist == dist):
                 liq_place.append(liq_id)
 
-        # if test:
-        #     print( liq_place )
+        if test:
+            print( liq_place )
 
         return liq_place[0]
 
@@ -174,7 +174,7 @@ class engine:
         # print(">>>doing func find_riv()")
         # return (0,0)
         cursor =self.conn.cursor()
-        cmd = "SELECT id, longitude, latitude FROM liquor;"
+        cmd = "SELECT id, longitude, latitude FROM fishing_and_river;"
         cursor.execute(cmd)
         tmp_lst = cursor.fetchall()
 
@@ -197,7 +197,7 @@ class engine:
                 riv_place.append(riv_id)
 
         if test:
-            # print( riv_place )
+            print( riv_place )
 
         return riv_place[0]
 
