@@ -33,6 +33,7 @@ General interface:
             3. Outdoor
             4. Liquor
             5. Rivers
+            (2-5, Find out the closest places you want)
 
             *6. __2 or 3 or 4 or 5 or 6__(#) 
                 # "#" is the number k, we can choose the place in k distance
@@ -47,4 +48,6 @@ General interface:
                 first we would search the first closest destination for Example a is Historic Place and then we would use the place of historic place to search the closest outdoor places 
             
             *9. connect the outdoor and the fisihing, maybe we can search that if the outdoor can fish, when and where and what kind of fish can get. 
+
+            
             

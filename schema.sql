@@ -48,8 +48,8 @@ CREATE TABLE outdoor_recreation(
   toilet BOOLEAN,
   shower BOOLEAN,
   directions VARCHAR(512),
-  point_x NUMERIC,
-  point_y NUMERIC
+  longitude NUMERIC,
+  latitude NUMERIC
 );
 
 DROP TABLE IF EXISTS Fishing_and_River;
@@ -57,8 +57,8 @@ CREATE TABLE Fishing_and_River(
   id serial primary key,
   waterbody_name VARCHAR(127) NOT NULL,
   county VARCHAR(127),
-  Longitude NUMERIC,
-  Latitude NUMERIC,
+  longitude NUMERIC,
+  latitude NUMERIC,
   Type_PA VARCHAR(127),
   Acess_owner VARCHAR(127)
 );

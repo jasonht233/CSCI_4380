@@ -7,7 +7,7 @@ import sys
 
 
 
-test = True
+test = True  
 
 
 class engine:
@@ -64,145 +64,51 @@ class engine:
             # make sure string is clear , and follow the rules
             ins_lst = self.clean_check(ins_lst)
 
-            for ins in ins_lst:
+            if len(ins_lst) == 1:
+                id = -1 
 
                 if instruction == "Historic":
-                    id=self.find_his(self.loc_x,self.loc_y)
+                    id=self.find_min(self.loc_x,self.loc_y,'historic_places')
+                    #print
 
                 if instruction == "Outdoor":
-                    id=self.find_out(self.loc_x,self.loc_y)
-
+                    id=self.find_min(self.loc_x,self.loc_y, 'outdoor_recreation')
+                    
                 if instruction == "Liquor":
-                    id=self.find_liq(self.loc_x,self.loc_y)
+                    id=self.find_min(self.loc_x,self.loc_y, 'liquor')
 
                 if instruction == "Rivers":
-                    id=self.find_riv(self.loc_x,self.loc_y)
+                    id=self.find_min(self.loc_x,self.loc_y , 'fishing_and_river')
+            
+                if instruction == "Outdoor-fishing":
+                    id = self.find_out_fishing(self.loc_x, self.loc_y)
 
 
 
-    def find_his(self,loc_x, loc_y):
+
+    def find_min(self,loc_x, loc_y,t_name ):
         # print(">>>doing func find_his()")
         # return (0,0)
         cursor =self.conn.cursor()
-        cmd = "SELECT id, longitude, latitude FROM historic_places;"
+        cmd = "SELECT id, ( (%f-longitude)^2+ (%f-latitude)^2 )^0.5  AS dist FROM %s ORDER BY dist ASC;"%(loc_x , loc_y, t_name )
+
         cursor.execute(cmd)
         tmp_lst = cursor.fetchall()
-
-        his_place = list()
-        min_dist = 999999
-
-        for i in range(0,len(tmp_lst) ):
-
-            his_id = tmp_lst[i][0]
-            his_x = tmp_lst[i][1]
-            his_y = tmp_lst[i][2]
+        # if test:
+        #     for tmp in tmp_lst:
+        #         print(tmp)
+        return tmp_lst[0][0]
 
 
+    #find out the closest recreation where you can fish and then we can find out the fish places. 
+    def find_out_fishing(self, self.loc_x, self.loc_y ):
+        cursor = self.conn.cursor()
 
-            dist = math.sqrt( math.pow(loc_x-float(his_x),2) + math.pow(loc_y-float(his_y),2))
-
-            min_dist = min(min_dist, dist)
-
-            if(min_dist == dist):
-                his_place.append(his_id)
-
-        if test:
-            print( his_place )
-
-        return his_place[0]
-
-    def find_out(self,loc_x, loc_y):
-        cursor =self.conn.cursor()
-        cmd = "SELECT id, point_x, point_y FROM outdoor_recreation;"
-        cursor.execute(cmd)
-        tmp_lst = cursor.fetchall()
-
-        nice_place = list()
-        min_dist = 999999
-
-        for i in range(0,len(tmp_lst) ):
-
-            out_id = tmp_lst[i][0]
-            out_x = tmp_lst[i][1]
-            out_y = tmp_lst[i][2]
+        cmd = ""
 
 
 
-            dist = math.sqrt( math.pow(loc_x-float(out_x),2) + math.pow(loc_y-float(out_y),2))
-
-            min_dist = min(min_dist, dist)
-
-            if(min_dist == dist):
-                nice_place.append(out_id)
-
-        if test:
-            print( nice_place )
-
-        return nice_place[0]
-
-
-    def find_liq(self,loc_x, loc_y):
-        # print(">>>doing func find_liq()")
-        # return (0,0)
-        cursor =self.conn.cursor()
-        cmd = "SELECT id, longitude, latitude FROM liquor;"
-        cursor.execute(cmd)
-        tmp_lst = cursor.fetchall()
-
-        liq_place = list()
-        min_dist = 999999
-
-        for i in range(0,len(tmp_lst) ):
-
-            liq_id = tmp_lst[i][0]
-            liq_x = tmp_lst[i][1]
-            liq_y = tmp_lst[i][2]
-
-
-
-            dist = math.sqrt( math.pow(loc_x-float(liq_x),2) + math.pow(loc_y-float(liq_y),2))
-
-            min_dist = min(min_dist, dist)
-
-            if(min_dist == dist):
-                liq_place.append(liq_id)
-
-        if test:
-            print( liq_place )
-
-        return liq_place[0]
-
-    def find_riv(self,loc_x, loc_y):
-        # print(">>>doing func find_riv()")
-        # return (0,0)
-        cursor =self.conn.cursor()
-        cmd = "SELECT id, longitude, latitude FROM fishing_and_river;"
-        cursor.execute(cmd)
-        tmp_lst = cursor.fetchall()
-
-        riv_place = list()
-        min_dist = 999999
-
-        for i in range(0,len(tmp_lst) ):
-
-            riv_id = tmp_lst[i][0]
-            riv_x = tmp_lst[i][1]
-            riv_y = tmp_lst[i][2]
-
-
-
-            dist = math.sqrt( math.pow(loc_x-float(riv_x),2) + math.pow(loc_y-float(riv_y),2))
-
-            min_dist = min(min_dist, dist)
-
-            if(min_dist == dist):
-                riv_place.append(riv_id)
-
-        if test:
-            print( riv_place )
-
-        return riv_place[0]
-
+        return 0 
 
 
 

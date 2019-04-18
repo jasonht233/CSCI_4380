@@ -68,13 +68,13 @@ def main():
                     row[cnt] = row[cnt][:index]+"\\"+row[cnt][:index]
 
             if row[4] != '' and row[35] != '' :
-                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s', '%s', '%s' ,'%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1],row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
+                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s', '%s', '%s' ,'%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1].lower(),row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
             if row[4] == '':
-                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s', '%s', '%s','%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1],row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
+                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s', '%s', '%s','%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1].lower() ,row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
             if row[35] =='':
-                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s','%s', '%s','%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1],row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
+                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s','%s', '%s','%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1].lower() ,row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
             if row[4]=='' and row[35] =='' :
-                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s', '%s', '%s','%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1],row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
+                insert = "INSERT INTO outdoor_recreation VALUES (%d,'%s', '%s', '%s','%s', %s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s, '%s',%f,%f);"%(line_count,row[1].lower() ,row[2],row[3],row[4],  row[5]=='Y',row[6]=='Y',row[8]=='Y',row[9]=='Y',row[10]=='Y',row[11]=='Y',row[12]=='Y',row[15]=='Y',row[16]=='Y',row[20]=='Y',row[21]=='Y',row[22]=='Y', row[35],float(row[37]) ,float(row[38]) )
 
             cursor.execute(insert)
 
@@ -103,7 +103,7 @@ def main():
                 if index != -1:
                     row[cnt] = row[cnt][:index]+"\\"+row[cnt][:index]
 
-            insert = "INSERT INTO historic_places VALUES (%d,'%s', '%s',%f,%f);"%(line_count-1,row[0],row[1],float(row[-3]),float(row[-2]) )
+            insert = "INSERT INTO historic_places VALUES (%d,'%s', '%s',%f,%f);"%(line_count-1,row[0],row[1].lower() ,float(row[-3]),float(row[-2]) )
             cursor.execute(insert)
             conn.commit()
 
@@ -126,7 +126,7 @@ def main():
                     row[cnt]=row[cnt][:index]+'\\'+row[cnt][:index]
             if row[-3]=='' or row[-2] =='':
                 continue
-            insert = "INSERT INTO liquor VALUES (%d,'%s','%s','%s','%s',%f,%f);"%(line_count-1,row[7],row[6],row[12],row[9],float(row[-3]),float(row[-2]) )
+            insert = "INSERT INTO liquor VALUES (%d,'%s','%s','%s','%s',%f,%f);"%(line_count-1,row[7],row[6].lower() ,row[12],row[9],float(row[-3]),float(row[-2]) )
             cursor.execute(insert)
             conn.commit()
 
@@ -150,7 +150,7 @@ def main():
                 if index != -1:
                     row[cnt]=row[cnt][:index]+'\\'+row[cnt][:index]
 
-            insert = "INSERT INTO fishing_and_river VALUES (%d,'%s','%s',%f,%f,'%s','%s');"%(line_count-1,row[0],row[4],float(row[-3]),float(row[-2]),row[5],row[6])
+            insert = "INSERT INTO fishing_and_river VALUES (%d,'%s','%s',%f,%f,'%s','%s');"%(line_count-1,row[0], row[4].lower()  ,float(row[-3]),float(row[-2]),row[5],row[6])
             cursor.execute(insert)
             conn.commit()
 
