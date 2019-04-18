@@ -4,10 +4,11 @@ import psycopg2.extras
 import load_data
 import math
 import sys
+import locator
 
 
 
-test = True  
+test = True
 
 
 class engine:
@@ -38,16 +39,25 @@ class engine:
         return fine
 
     def search(self):
+        permission = input("Do you authorize me to use your current location? Y/N\n")
+        allow = False
+        if permission.lower() == 'y':
+            allow = True
+        if (allow):
+            lat,lng = locator.find_me().latlng
+            address = locator.find_me().address
+            print('Here is your location:',address,'\nHere is your latitude and longitude: '+str(lat)+', '+str(lng))
         while(True):
-
-            if(self.loc_x == -1 or self.loc_y == -1):
-                self.loc_x = float(input("Please enter your location x: "))
-                self.loc_y = float(input("Please enter your location y: "))
+            if (allow == False):
+                allow = True
+                if(self.loc_x == -1 or self.loc_y == -1):
+                    self.loc_x = float(input("Please enter your location x: "))
+                    self.loc_y = float(input("Please enter your location y: "))
 
             # city = input("Please enter your city: ")
 
-            if test:
-                print("the loc_x and loc_y ",self.loc_x,self.loc_y)
+            # if test:
+            #     print("the loc_x and loc_y ",self.loc_x,self.loc_y)
 
             #to enter the really instruction.
             instruction = input("Please enter what you want:\n")
@@ -65,7 +75,7 @@ class engine:
             ins_lst = self.clean_check(ins_lst)
 
             if len(ins_lst) == 1:
-                id = -1 
+                id = -1
 
                 if instruction == "Historic":
                     id=self.find_min(self.loc_x,self.loc_y,'historic_places')
@@ -73,13 +83,13 @@ class engine:
 
                 if instruction == "Outdoor":
                     id=self.find_min(self.loc_x,self.loc_y, 'outdoor_recreation')
-                    
+
                 if instruction == "Liquor":
                     id=self.find_min(self.loc_x,self.loc_y, 'liquor')
 
                 if instruction == "Rivers":
                     id=self.find_min(self.loc_x,self.loc_y , 'fishing_and_river')
-            
+
                 if instruction == "Outdoor-fishing":
                     id = self.find_out_fishing(self.loc_x, self.loc_y)
 
@@ -100,15 +110,15 @@ class engine:
         return tmp_lst[0][0]
 
 
-    #find out the closest recreation where you can fish and then we can find out the fish places. 
-    def find_out_fishing(self, self.loc_x, self.loc_y ):
-        cursor = self.conn.cursor()
-
-        cmd = ""
-
-
-
-        return 0 
+    #find out the closest recreation where you can fish and then we can find out the fish places.
+    # def find_out_fishing(self, self.loc_x, self.loc_y ):
+    #     cursor = self.conn.cursor()
+    #
+    #     cmd = ""
+    #
+    #
+    #
+    #     return 0
 
 
 
