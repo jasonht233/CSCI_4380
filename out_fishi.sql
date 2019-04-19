@@ -1,5 +1,5 @@
 
-SELECT out_fish.out_id , out_fish.fish_id, (()^2+()^2)^0.5
+SELECT out_fish.out_id , out_fish.fish_id, ((%d - outdoor_recreation.longitude)^2+(%d - outdoor_recreation.latitude)^2)^0.5 AS out_dist
 FROM    
     (
         SELECT out_t.id AS out_id , fish_t.id AS fish_id , fish_t.dist AS dist 
@@ -24,6 +24,8 @@ FROM
     , outdoor_recreation , fishing_and_river
 WHERE 
     out_fish.out_id = outdoor_recreation.id 
+
+ORDER BY out_dist DESC 
 ;
 
     

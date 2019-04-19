@@ -32,7 +32,7 @@ class engine:
 
         for i in ins_lst:
 
-            if i == "Historic" or i == "Outdoor" or i == "Liquor" or i =="Rivers":
+            if i == "Historic" or i == "Outdoor" or i == "Liquor" or i =="Rivers" or i =="Outdoor-fishing":
                 fine.append(i)
             else:
                 print("unrecongnized word from the clean check", i)
@@ -91,7 +91,7 @@ class engine:
                     id=self.find_min(self.loc_x,self.loc_y , 'fishing_and_river')
 
                 if instruction == "Outdoor-fishing":
-                    id = self.find_out_fishing(self.loc_x, self.loc_y)
+                    id_out , id_fish = self.find_out_fishing(self.loc_x, self.loc_y)
 
 
 
@@ -111,15 +111,19 @@ class engine:
 
 
     #find out the closest recreation where you can fish and then we can find out the fish places.
-    # def find_out_fishing(self, self.loc_x, self.loc_y ):
-    #     cursor = self.conn.cursor()
-    #
-    #     cmd = ""
-    #
-    #
-    #
-    #     return 0
+    def find_out_fishing(self, loc_x, loc_y):
+        cursor = self.conn.cursor()
+        tmp_lst = list() 
+        with open('out_fishi.sql','r') as find_of:
+            cmd = find_of.read()
+            cmd = cmd%(loc_x, loc_y)
+            cursor.execute(cmd)
+            tmp_lst= cursor.fetchall() 
 
+        if(len(tmp_lst) == 0):
+            print("Eror in the find_out_fishing")
+
+        return tmp_lst[0][0], tmp_lst[0][1]
 
 
 if __name__ == "__main__":
