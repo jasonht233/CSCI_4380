@@ -92,6 +92,7 @@ class engine:
 
                 if instruction == "Outdoor-fishing":
                     id_out , id_fish = self.find_out_fishing(self.loc_x, self.loc_y)
+                    print("id_out is->",id_out,"id_fish is->",id_fish)
 
 
 

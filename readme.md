@@ -49,5 +49,17 @@ General interface:
             
             *9. connect the outdoor and the fisihing, maybe we can search that if the outdoor can fish, when and where and what kind of fish can get. 
 
-            
-            
+
+
+Problem to solve:
+
+    1. all the information for the user haven't been set up. Now we get the id, but we are not sure what's kind of information would be. 
+
+    2. for two or three or more place to find together is not finished.
+
+    3. Can we think one more hard (complex) problem ???
+
+    
+
+                
+                
