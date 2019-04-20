@@ -27,15 +27,26 @@ class engine:
         self.loc_x = -1
         self.loc_y = -1
 
+        self.menu = dict()
+        self.menu["historic"] = "historic_places"
+        self.menu["outdoor"] = "outdoor_recreation"
+        self.menu["liquor"] = "liquor"
+        self.menu["outdoor-fishing"] = "outdoor-fishing"
+
     def clean_check( self, ins_lst ):
         fine = list()
 
         for i in ins_lst:
 
-            if i == "Historic" or i == "Outdoor" or i == "Liquor" or i =="Rivers" or i =="Outdoor-fishing":
-                fine.append(i)
+            if i == "" or i==" ":
+                continue 
+
+            if i.lower()  in self.menu :
+                fine.append(i.lower() )
             else:
                 print("unrecongnized word from the clean check", i)
+                assert(False,"can't recongnize the word")
+
         return fine
 
     def search(self):
@@ -43,10 +54,13 @@ class engine:
         allow = False
         if permission.lower() == 'y':
             allow = True
+
         if (allow):
             lat,lng = locator.find_me().latlng
             address = locator.find_me().address
             print('Here is your location:',address,'\nHere is your latitude and longitude: '+str(lat)+', '+str(lng))
+
+
         while(True):
             if (allow == False):
                 allow = True
@@ -65,37 +79,41 @@ class engine:
 
 
             # command analyze
-            if instruction == "Quit":
+            if instruction.lower() == "quit":
                 print("thank you for using stupid app")
                 break
 
             ins_lst = instruction.split(" ")
-
             # make sure string is clear , and follow the rules
             ins_lst = self.clean_check(ins_lst)
 
             if len(ins_lst) == 1:
                 id = -1
+                
+                instruction = ins_lst[0]
 
-                if instruction == "Historic":
-                    id=self.find_min(self.loc_x,self.loc_y,'historic_places')
-                    #print
+                if instruction != "outdoor-fishing":
+                    id = self.find_min(self.loc_x , self.loc_y , self.menu[instruction] )
 
-                if instruction == "Outdoor":
-                    id=self.find_min(self.loc_x,self.loc_y, 'outdoor_recreation')
-
-                if instruction == "Liquor":
-                    id=self.find_min(self.loc_x,self.loc_y, 'liquor')
-
-                if instruction == "Rivers":
-                    id=self.find_min(self.loc_x,self.loc_y , 'fishing_and_river')
-
-                if instruction == "Outdoor-fishing":
+                if instruction == "outdoor-fishing":
                     id_out , id_fish = self.find_out_fishing(self.loc_x, self.loc_y)
                     print("id_out is->",id_out,"id_fish is->",id_fish)
+            
+            elif len(ins_lst) ==2 :
 
+                if ins_lst[0] in self.menu and ins_lst[1] in self.menu:
+                    if ins_lst[0] != 'outdoor-fishing' and ins_lst[1] !='outdoor-fishing':
+                        id_1,id_2,dist=self.find_two(self.loc_x , self.loc_y , self.menu[ins_lst[0]], self.menu[ins_lst[1]] )
 
-
+                        if test:
+                            print("first id is {0}, the second is {1} and the distance is {2}".format(id_1, id_2, dist ))
+                    else:
+                        pass 
+                else:
+                    print("Wrong insertion, sorry")
+            
+            else:
+                pass 
 
     def find_min(self,loc_x, loc_y,t_name ):
         # print(">>>doing func find_his()")
@@ -122,9 +140,23 @@ class engine:
             tmp_lst= cursor.fetchall() 
 
         if(len(tmp_lst) == 0):
-            print("Eror in the find_out_fishing")
+            print("Error in the find_out_fishing")
 
         return tmp_lst[0][0], tmp_lst[0][1]
+
+    def find_two(self, loc_x , loc_y , end_a , end_b ):
+        cursor = self.conn.cursor()
+        tmp_lst = list()
+
+        with open('find_two.sql','r') as find_two:
+            cmd = find_two.read()
+            cmd = cmd.format(loc_x, loc_y, end_a , end_b)
+            cursor.execute(cmd)
+            tmp_lst = cursor.fetchall()
+        
+        if(len(tmp_lst) == 0):
+            print("Error")
+        return tmp_lst[0][0], tmp_lst[0][1], tmp_lst[0][2]
 
 
 if __name__ == "__main__":

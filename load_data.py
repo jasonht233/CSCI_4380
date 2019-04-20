@@ -126,7 +126,7 @@ def main():
                     row[cnt]=row[cnt][:index]+'\\'+row[cnt][:index]
             if row[-3]=='' or row[-2] =='':
                 continue
-            insert = "INSERT INTO liquor VALUES (%d,'%s','%s','%s','%s',%f,%f);"%(line_count-1,row[7],row[6].lower() ,row[12],row[9],float(row[-3]),float(row[-2]) )
+            insert = "INSERT INTO liquor VALUES (%d,'%s','%s','%s','%s',%f,%f);"%(line_count-1,row[7],row[6].lower() ,row[12],row[9],float(row[-2]),float(row[-3]) )
             cursor.execute(insert)
             conn.commit()
 
