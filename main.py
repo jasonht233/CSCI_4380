@@ -224,16 +224,16 @@ class engine:
                 print(item)
             print()
         if instruction == "outdoor_recreation":
-            
+            all_outdoor = []
             for item in stuff:
                 id = item[0]
                 line = "select * from outdoor_recreation where id="+str(id)
                 cursor = self.conn.cursor()
                 cursor.execute(line)
                 result = cursor.fetchall()
-                all.add(result[0])
+                all_outdoor.append(result[0])
             print("\nYou can go check out:")
-            for item in list(all):
+            for item in all_outdoor:
                 print(item[2],"in",item[1].title(),"county")
                 print(item[3].title(),"is popular")
                 print()
