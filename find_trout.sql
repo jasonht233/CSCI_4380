@@ -1,5 +1,5 @@
 
-SELECT wbn , species, num 
+SELECT wbn , species, MAX(num) 
 FROM
     (
         SELECT Fishing_and_River.waterbody_name as wbn, 
@@ -11,5 +11,6 @@ FROM
     ) AS cloeset , fish
 WHERE  
     fish.waterbody_name = wbn 
+GROUP BY 
+    wbn , species
 ;
-   

@@ -69,11 +69,7 @@ class engine:
                     self.loc_x = float(input("Please enter your location x: "))
                     self.loc_y = float(input("Please enter your location y: "))
 
-            # city = input("Please enter your city: ")
-
-            # if test:
-            #     print("the loc_x and loc_y ",self.loc_x,self.loc_y)
-
+        
             #to enter the really instruction.
             instruction = input("Please enter what you want:\n")
 
