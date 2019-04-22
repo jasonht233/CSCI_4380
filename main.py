@@ -40,7 +40,7 @@ class engine:
         for i in ins_lst:
 
             if i == "" or i==" ":
-                continue 
+                continue
 
             if i.lower()  in self.menu :
                 fine.append(i.lower() )
@@ -86,11 +86,12 @@ class engine:
 
             if len(ins_lst) == 1:
                 id = -1
-                
+
                 instruction = ins_lst[0]
 
                 if instruction != "outdoor-fishing" and instruction != "fishing":
-                    id = self.find_min(self.loc_x , self.loc_y , self.menu[instruction] )
+                    stuff = self.find_min(self.loc_x , self.loc_y , self.menu[instruction] )
+                    self.print_result(stuff, self.menu[instruction])
 
                 if instruction == "outdoor-fishing":
                     id_out , id_fish = self.find_out_fishing(self.loc_x, self.loc_y)
@@ -108,36 +109,36 @@ class engine:
                         if test:
                             print("first id is {0}, the second is {1} and the distance is {2}".format(id_1, id_2, dist ))
                     else:
-                        pass 
+                        pass
                 else:
                     print("Wrong insertion, sorry")
-            
+
             else:
-                pass 
+                pass
 
     def find_min(self,loc_x, loc_y,t_name ):
         # print(">>>doing func find_his()")
         # return (0,0)
         cursor =self.conn.cursor()
-        cmd = "SELECT id, ( (%f-longitude)^2+ (%f-latitude)^2 )^0.5  AS dist FROM %s ORDER BY dist ASC;"%(loc_x , loc_y, t_name )
+        cmd = "SELECT id, ( (%f-longitude)^2+ (%f-latitude)^2 )^0.5  AS dist FROM %s ORDER BY dist DESC;"%(loc_x , loc_y, t_name )
 
         cursor.execute(cmd)
         tmp_lst = cursor.fetchall()
         # if test:
         #     for tmp in tmp_lst:
         #         print(tmp)
-        return tmp_lst[0][0]
+        return tmp_lst[0:3]
 
 
     #find out the closest recreation where you can fish and then we can find out the fish places.
     def find_out_fishing(self, loc_x, loc_y):
         cursor = self.conn.cursor()
-        tmp_lst = list() 
+        tmp_lst = list()
         with open('out_fishi.sql','r') as find_of:
             cmd = find_of.read()
             cmd = cmd%(loc_x, loc_y)
             cursor.execute(cmd)
-            tmp_lst= cursor.fetchall() 
+            tmp_lst= cursor.fetchall()
 
         if(len(tmp_lst) == 0):
             print("Error in the find_out_fishing")
@@ -153,7 +154,7 @@ class engine:
             cmd = cmd.format(loc_x, loc_y, end_a , end_b)
             cursor.execute(cmd)
             tmp_lst = cursor.fetchall()
-        
+
         if(len(tmp_lst) == 0):
             print("Error")
         return tmp_lst[0][0], tmp_lst[0][1], tmp_lst[0][2]
@@ -171,8 +172,60 @@ class engine:
         if( len(tmp_lst)==0):
             print("Sorry no Trout")
         else:
-            print(tmp_lst)
-        return 0
+            print("\nYou can go to",tmp_lst[0][0].title())
+            species = []
+            number_caught = []
+            for item in tmp_lst:
+                species.append(item[1])
+                number_caught.append(item[2])
+            print("There are:")
+            for i in range(len(species)):
+                print(species[i]+", number caught last spring:",number_caught[i])
+            print()
+
+
+    def print_result(self, stuff,instruction):
+        if instruction == "historic_places":
+            all = []
+            for item in stuff:
+                id = item[0]
+                line = "select name from historic_places where id="+str(id)
+                cursor = self.conn.cursor()
+                cursor.execute(line)
+                result = cursor.fetchall()
+                all.append(result[0][0])
+            print("\nYou can go check out:")
+            for item in all:
+                print(item)
+            print()
+        if instruction == "liquor":
+            all = []
+            for item in stuff:
+                id = item[0]
+                line = "select name from liquor where id="+str(id)
+                cursor = self.conn.cursor()
+                cursor.execute(line)
+                result = cursor.fetchall()
+                all.append(result[0][0])
+            print("\nYou can go check out:")
+            for item in all:
+                print(item)
+            print()
+        if instruction == "outdoor_recreation":
+            all = []
+            for item in stuff:
+                id = item[0]
+                line = "select * from outdoor_recreation where id="+str(id)
+                cursor = self.conn.cursor()
+                cursor.execute(line)
+                result = cursor.fetchall()
+                all.append(result[0])
+            print("\nYou can go check out:")
+            for item in all:
+                print(item[2],"in",item[1].title(),"county")
+                print(item[3].title(),"is popular")
+                print()
+            print()
 
 if __name__ == "__main__":
     search_eng = engine()
