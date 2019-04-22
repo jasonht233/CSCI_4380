@@ -78,7 +78,6 @@ class engine:
 
             # command analyze
             if instruction.lower() == "quit":
-                print("thank you for using stupid app")
                 break
 
             ins_lst = instruction.split(" ")

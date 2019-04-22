@@ -32,7 +32,7 @@ def main():
     
     if re_load != True : 
         if test :
-            print("Data has existed, no need to reload ")
+            print("Data loaded, no need to reload ")
         return 0
     
     if test:
