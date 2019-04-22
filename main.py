@@ -71,7 +71,8 @@ class engine:
 
         
             #to enter the really instruction.
-            instruction = input("Please enter what you want:\n")
+            menu = "Options:\n1.fishing\n2.liquor\n3.outdoor:outdoor recreation center\n4.historic:historic places\n"
+            instruction = input(menu+"What's your interest:\n")
 
 
 
@@ -95,19 +96,29 @@ class engine:
 
                 if instruction == "outdoor-fishing":
                     id_out , id_fish = self.find_out_fishing(self.loc_x, self.loc_y)
-                    print("id_out is->",id_out,"id_fish is->",id_fish)
+                    self.print_outfish(id_out , id_fish)
 
                 if instruction == "fishing":
-                    id = self.find_trout(self.loc_x, self.loc_y)
-
+                    self.find_trout(self.loc_x, self.loc_y)
+        
             elif len(ins_lst) ==2 :
 
                 if ins_lst[0] in self.menu and ins_lst[1] in self.menu:
                     if ins_lst[0] != 'outdoor-fishing' and ins_lst[1] !='outdoor-fishing':
                         id_1,id_2,dist=self.find_two(self.loc_x , self.loc_y , self.menu[ins_lst[0]], self.menu[ins_lst[1]] )
 
-                        if test:
-                            print("first id is {0}, the second is {1} and the distance is {2}".format(id_1, id_2, dist ))
+                        cursor = self.conn.cursor()
+
+                        cursor.execute("SELECT * FROM {0} WHERE id = {1}".format(self.menu[ins_lst[0]],id_1))
+                        lst1 = cursor.fetchall()
+
+                        cursor.execute("SELECT * FROM {0} WHERE id = {1}".format(self.menu[ins_lst[1]],id_2))
+                        lst2 = cursor.fetchall()
+
+
+
+                        self.print_result(lst1, self.menu[ins_lst[0]])
+                        self.print_result(lst2, self.menu[ins_lst[1]])
                     else:
                         pass
                 else:
@@ -185,47 +196,65 @@ class engine:
 
 
     def print_result(self, stuff,instruction):
+        all = set()
         if instruction == "historic_places":
-            all = []
+            
             for item in stuff:
                 id = item[0]
                 line = "select name from historic_places where id="+str(id)
                 cursor = self.conn.cursor()
                 cursor.execute(line)
                 result = cursor.fetchall()
-                all.append(result[0][0])
+                all.add(result[0][0])
             print("\nYou can go check out:")
-            for item in all:
+            for item in list(all):
                 print(item)
             print()
         if instruction == "liquor":
-            all = []
+            
             for item in stuff:
                 id = item[0]
                 line = "select name from liquor where id="+str(id)
                 cursor = self.conn.cursor()
                 cursor.execute(line)
                 result = cursor.fetchall()
-                all.append(result[0][0])
+                all.add(result[0][0])
             print("\nYou can go check out:")
-            for item in all:
+            for item in list(all):
                 print(item)
             print()
         if instruction == "outdoor_recreation":
-            all = []
+            
             for item in stuff:
                 id = item[0]
                 line = "select * from outdoor_recreation where id="+str(id)
                 cursor = self.conn.cursor()
                 cursor.execute(line)
                 result = cursor.fetchall()
-                all.append(result[0])
+                all.add(result[0])
             print("\nYou can go check out:")
-            for item in all:
+            for item in list(all):
                 print(item[2],"in",item[1].title(),"county")
                 print(item[3].title(),"is popular")
                 print()
             print()
+
+    def print_outfish(self, id_out ,id_fish):
+        cursor = self.conn.cursor() 
+        cursor.execute("SELECT * FROM outdoor_recreation WHERE id = {0}".format(id_out))
+        tmp_lst = cursor.fetchall()
+        self.print_result(tmp_lst, "outdoor_recreation")
+
+        cursor.execute("SELECT * FROM fishing_and_river WHERE id = {0}".format(id_fish))
+        tmp_lst = cursor.fetchall()
+        
+        fish_lst = tmp_lst[0][-1].split(" - ")
+
+        print("Fish you can get:")
+        
+        for fish in fish_lst:
+            print(fish,end="   ")
+        print()
 
 if __name__ == "__main__":
     search_eng = engine()
