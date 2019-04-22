@@ -6,15 +6,6 @@ problem general:
 1. longitude and latitude would not be interger
 2. not a good way for reference to the outdorr_recreation
 
-
-Solove problem:
-
-1. for p1: change it to NUMERIC
-2. for p2: using special data id to connect with them
-
-Question:
-1. why we use the longitude , latitude ???? as the
-
 */
 DROP SCHEMA IF EXISTS Vocation_recommand;
 CREATE SCHEMA Vocation_recommand;
@@ -60,7 +51,8 @@ CREATE TABLE Fishing_and_River(
   longitude NUMERIC,
   latitude NUMERIC,
   Type_PA VARCHAR(127),
-  Acess_owner VARCHAR(127)
+  Acess_owner VARCHAR(127),
+  fish VARCHAR(256)
 );
 
 DROP TABLE IF EXISTS historic_Places;
@@ -81,6 +73,17 @@ CREATE TABLE liquor(
   address VARCHAR(512),
   longitude NUMERIC,
   latitude NUMERIC
+);
+
+
+DROP TABLE IF EXISTS fish;
+CREATE TABLE fish(
+  id serial primary key, 
+  waterbody_name VARCHAR(127) NOT NULL,
+  county VARCHAR(127),
+  season VARCHAR(32),
+  species VARCHAR(32),
+  num INTEGER 
 );
 
 GRANT ALL PRIVILEGES ON liquor , historic_Places, outdoor_recreation TO resort;

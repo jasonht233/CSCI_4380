@@ -12,7 +12,7 @@ def main():
 
     # check do we have already have the table 
     re_load = False 
-    lst = ['fishing_and_river','historic_places','liquor','outdoor_recreation']
+    lst = ['fishing_and_river','historic_places','liquor','outdoor_recreation','fish']
     table_cnt = 0 
     for table in lst:
         cursor = conn.cursor()
@@ -24,8 +24,10 @@ def main():
             cursor.execute(cmd)
             if cursor.rowcount == 0 :
                 re_load = True 
+        else:
+            re_load = True  
     
-    if table_cnt != 4:
+    if table_cnt != len(lst) :
         re_load = True 
     
     if re_load != True : 
@@ -150,7 +152,27 @@ def main():
                 if index != -1:
                     row[cnt]=row[cnt][:index]+'\\'+row[cnt][:index]
 
-            insert = "INSERT INTO fishing_and_river VALUES (%d,'%s','%s',%f,%f,'%s','%s');"%(line_count-1,row[0], row[4].lower()  ,float(row[-3]),float(row[-2]),row[5],row[6])
+            insert = "INSERT INTO fishing_and_river VALUES (%d,'%s','%s',%f,%f,'%s','%s','%s');"%(line_count-1,row[0].lower(), row[4].lower()  ,float(row[-3]),float(row[-2]),row[5],row[6],row[1])
+            cursor.execute(insert)
+            conn.commit()
+
+    with open('data/Current_Season_Spring_Trout_Stocking.csv') as csv_file:
+        csv_reader = csv.reader(csv_file,delimiter=',')
+        line_count = 0
+
+        for row_o in csv_reader:
+            if line_count == 0:
+                line_count+=1
+                continue
+            line_count+=1
+            cursor = conn.cursor()
+
+            row = list(row_o)
+            for cnt in range(len(row)):
+                index = row[cnt].find("'")
+                if index != -1:
+                    row[cnt] = row[cnt][:index]+"\\"+row[cnt][:index]
+            insert = "INSERT INTO fish VALUES (%d,'%s','%s','%s','%s',%d)"%(line_count-1,row[4].lower(),row[2].lower(),row[5],row[7],int(row[6]) )
             cursor.execute(insert)
             conn.commit()
 

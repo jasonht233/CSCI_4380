@@ -10,8 +10,11 @@ if __name__ == '__main__' :
 
 
     ###this part is to drop the existed tables and the data we have already loaded, and reloaded
-    with open('schema.sql','r') as setup:
-        cursor = conn.cursor()
-        setup_queries = setup.read()
-        cursor.execute(setup_queries)
-        conn.commit()
+   
+    cursor = conn.cursor()
+    cursor.execute('DROP TABLE IF EXISTS fish')
+    cursor.execute('DROP TABLE IF EXISTS liquor')
+    cursor.execute('DROP TABLE IF EXISTS historic_Places')
+    cursor.execute('DROP TABLE IF EXISTS Fishing_and_River')
+    cursor.execute('DROP TABLE IF EXISTS outdoor_recreation')
+    conn.commit()

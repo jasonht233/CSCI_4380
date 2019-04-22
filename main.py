@@ -32,6 +32,7 @@ class engine:
         self.menu["outdoor"] = "outdoor_recreation"
         self.menu["liquor"] = "liquor"
         self.menu["outdoor-fishing"] = "outdoor-fishing"
+        self.menu["fishing"] = "fish"
 
     def clean_check( self, ins_lst ):
         fine = list()
@@ -92,13 +93,16 @@ class engine:
                 
                 instruction = ins_lst[0]
 
-                if instruction != "outdoor-fishing":
+                if instruction != "outdoor-fishing" and instruction != "fishing":
                     id = self.find_min(self.loc_x , self.loc_y , self.menu[instruction] )
 
                 if instruction == "outdoor-fishing":
                     id_out , id_fish = self.find_out_fishing(self.loc_x, self.loc_y)
                     print("id_out is->",id_out,"id_fish is->",id_fish)
-            
+
+                if instruction == "fishing":
+                    id = self.find_trout(self.loc_x, self.loc_y)
+
             elif len(ins_lst) ==2 :
 
                 if ins_lst[0] in self.menu and ins_lst[1] in self.menu:
@@ -158,6 +162,21 @@ class engine:
             print("Error")
         return tmp_lst[0][0], tmp_lst[0][1], tmp_lst[0][2]
 
+    def find_trout(self, loc_x , loc_y):
+        cursor =self.conn.cursor()
+        tmp_lst = list()
+
+        with open('find_trout.sql','r') as find_fish:
+            cmd = find_fish.read()
+            cmd = cmd.format(loc_x, loc_y)
+            cursor.execute(cmd)
+            tmp_lst = cursor.fetchall()
+
+        if( len(tmp_lst)==0):
+            print("Sorry no Trout")
+        else:
+            print(tmp_lst)
+        return 0
 
 if __name__ == "__main__":
     search_eng = engine()

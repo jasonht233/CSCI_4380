@@ -27,38 +27,10 @@ General interface:
         at first, we would ask the user to write the location
         
         then get into the manu:
-            *1. recommand (randomly choose the closest places for user)
-                #the following 4 would be choose the closest place which the user is most interested in 
-            2. Historic
-            3. Outdoor
-            4. Liquor
-            5. Rivers
-            (2-5, Find out the closest places you want)
+            1. Historic , outdoor, liquor, outdoor-fishing, fishing: find out the closest place to your location 
 
-            *6. __2 or 3 or 4 or 5 or 6__(#) 
-                # "#" is the number k, we can choose the place in k distance
-            *7. __2 or 3 or 4 or 5 or 6__(#th)
-                # "#" is the number of k, we can choose the kth closest places
-
-            8. we allow two or three location search like : 
-                Historic Outdoor------> Example a 
-                Liquor Rivers
-                Outdoor Liquor
-
-                first we would search the first closest destination for Example a is Historic Place and then we would use the place of historic place to search the closest outdoor places 
-            
-            *9. connect the outdoor and the fisihing, maybe we can search that if the outdoor can fish, when and where and what kind of fish can get. 
-
-
-
-Problem to solve:
-
-    1. all the information for the user haven't been set up. Now we get the id, but we are not sure what's kind of information would be. 
-
-    2. for two or three or more place to find together is not finished.
-
-    3. Can we think one more hard (complex) problem ???
-
+            2. A B 
+            A B [historic , outdoor , liquor ]
     
 
                 
