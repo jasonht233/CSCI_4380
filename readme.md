@@ -12,12 +12,12 @@
     National Register of Historic Places
     https://data.ny.gov/Recreation/National-Register-of-Historic-Places/iisn-hnyv
 
-
+    Sprint Trout 
+    https://data.ny.gov/Recreation/Current-Season-Spring-Trout-Stocking-Data-Lens/bexs-funz
 
 for our load_data:
 1. We need use the schema.sql to set up the table and schema(include in the python code)
 2. Then it would load four files separately.
-
 
 
 General interface:
@@ -33,5 +33,12 @@ General interface:
             A B [historic , outdoor , liquor ]
     
 
-                
+memebers:
+
+    Bohan Wu (wub4)
+    Haotian Zhang (zhangh20)
+    Ruoyan Wu(wur7）
+    Shenjin Li (lis17)
+    
+                  
                 
