@@ -42,7 +42,24 @@ General interface:
             2. A B function 
             A B  is in the list[historic , outdoor , liquor ]
                 For the this function which is different for the last one. It can take two interested places which the user pick and use the sql to combine these two places and give the ans or suggestion to user to recommand the great way to enjoy their day. 
-   
+
+
+commands:
+
+Set up the data and operate our application(don't need to run the load_data.py ):
+
+>>> python3 main.py 
+
+Choose to locate your location or Not 
+
+>>> Y
+    ^ which would set the location for your current location 
+>>> N
+    ^ you can set up by yourselves 
+
+>>> Quit 
+    ^ quit the application 
+
 
 memebers:
 
