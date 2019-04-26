@@ -16,8 +16,13 @@
     https://data.ny.gov/Recreation/Current-Season-Spring-Trout-Stocking-Data-Lens/bexs-funz
 
 for our load_data:
-1. We need use the schema.sql to set up the table and schema(include in the python code)
-2. Then it would load four files separately.
+    1. For our data, we at first have the check whether the data is setup or not (including the number of tables and the number of rows in one table).
+    2. We need use the schema.sql to set up the table and schema(include in the python code)
+    3. Then it would load Five files separately.
+
+for our main.py:
+    In our main.py, it would run the load_data.py first.
+    Then it would have the location setting up. [our core information to connect the user and data set]
 
 
 General interface:
@@ -27,11 +32,17 @@ General interface:
         at first, we would ask the user to write the location
         
         then get into the manu:
-            1. Historic , outdoor, liquor, outdoor-fishing, fishing: find out the closest place to your location 
+            1. Historic , outdoor, liquor, outdoor-fishing, fishing, find-trout: find out the closest place to your location 
 
-            2. A B 
-            A B [historic , outdoor , liquor ]
-    
+                for the historic , outdoor , liquor fishing. They are all about the calculation between users and one table. 
+
+                for outdoor-fishing and find-trout. We are setting join two different tables together to give us one general answer based on the two data set. 
+
+
+            2. A B function 
+            A B  is in the list[historic , outdoor , liquor ]
+                For the this function which is different for the last one. It can take two interested places which the user pick and use the sql to combine these two places and give the ans or suggestion to user to recommand the great way to enjoy their day. 
+   
 
 memebers:
 
